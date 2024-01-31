@@ -449,8 +449,9 @@ var LIBRARY_OBJECT = (function() {
             version : '2.0.0',
             request : 'GetFeature',
             typeName : 'gwdm:region',
-            outputFormat : 'text/javascript',
-            format_options : 'callback:getRegion',
+            outputFormat : 'application/json',
+            // outputFormat : 'text/javascript',
+            // format_options : 'callback:getRegion',
             SrsName : 'EPSG:4326',
             featureID: 'region.'+region_id
         };
@@ -462,8 +463,9 @@ var LIBRARY_OBJECT = (function() {
 
         var ajax = $.ajax({
             url : URL,
-            dataType : 'jsonp',
-            jsonpCallback : 'getRegion',
+            dataType : 'json',
+            // dataType : 'jsonp',
+            // jsonpCallback : 'getRegion',
             success : function (response) {
                 var myStyle = {
                     "color": "#710000",
@@ -485,8 +487,9 @@ var LIBRARY_OBJECT = (function() {
             version : '2.0.0',
             request : 'GetFeature',
             typeName : 'gwdm:aquifer',
-            outputFormat : 'text/javascript',
-            format_options : 'callback:getRegionAquifers',
+            // outputFormat : 'text/javascript',
+            outputFormat : 'application/json',
+            // format_options : 'callback:getRegionAquifers',
             SrsName : 'EPSG:4326',
             cql_filter: 'region_id='+region_id
         };
@@ -495,8 +498,9 @@ var LIBRARY_OBJECT = (function() {
         var URL = $geoserverUrl + L.Util.getParamString(parameters);
         var ajax = $.ajax({
             url : URL,
-            dataType : 'jsonp',
-            jsonpCallback : 'getRegionAquifers',
+            dataType : 'json',
+            // dataType : 'jsonp',
+            // jsonpCallback : 'getRegionAquifers',
             success : function (response) {
                 aquiferGroup.clearLayers();
 
@@ -534,8 +538,9 @@ var LIBRARY_OBJECT = (function() {
             version : '2.0.0',
             request : 'GetFeature',
             typeName : 'gwdm:aquifer',
-            outputFormat : 'text/javascript',
-            format_options : 'callback:getAquifer',
+            outputFormat : 'application/json',
+            // outputFormat : 'text/javascript',
+            // format_options : 'callback:getAquifer',
             SrsName : 'EPSG:4326',
             featureID: 'aquifer.'+aquifer_id
         };
@@ -547,8 +552,9 @@ var LIBRARY_OBJECT = (function() {
 
         var ajax = $.ajax({
             url : URL,
-            dataType : 'jsonp',
-            jsonpCallback : 'getAquifer',
+            dataType : 'json',
+            // dataType : 'jsonp',
+            // jsonpCallback : 'getAquifer',
             success : function (response) {
                 var myStyle = {
                     "color": "#0004ff",
@@ -603,8 +609,9 @@ var LIBRARY_OBJECT = (function() {
             version : '2.0.0',
             request : 'GetFeature',
             typeName : 'gwdm:well',
-            outputFormat : 'text/javascript',
-            format_options : 'callback:getWells',
+            outputFormat : 'application/json',
+            // outputFormat : 'text/javascript',
+            // format_options : 'callback:getWells',
             SrsName : 'EPSG:4326',
             cql_filter: 'aquifer_id='+aquifer_id
         };
@@ -616,8 +623,9 @@ var LIBRARY_OBJECT = (function() {
 
         var ajax = $.ajax({
             url : URL,
-            dataType : 'jsonp',
-            jsonpCallback : 'getWells',
+            dataType : 'json',
+            // dataType : 'jsonp',
+            // jsonpCallback : 'getWells',
             success : function (response) {
                 wfs_response = response;
                 load_markers(wfs_response);

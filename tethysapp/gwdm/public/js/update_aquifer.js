@@ -116,7 +116,8 @@ var LIBRARY_OBJECT = (function() {
             version : '2.0.0',
             request : 'GetFeature',
             typeName : 'gwdm:aquifer',
-            outputFormat : 'text/javascript',
+            outputFormat : 'application/json',
+            // outputFormat : 'text/javascript',
             format_options : 'callback:getJson',
             SrsName : 'EPSG:4326',
             featureID: 'aquifer.'+aquifer_id
@@ -129,8 +130,9 @@ var LIBRARY_OBJECT = (function() {
 
         var ajax = $.ajax({
             url : URL,
-            dataType : 'jsonp',
-            jsonpCallback : 'getJson',
+            dataType : 'json',
+            // dataType : 'jsonp',
+            // jsonpCallback : 'getJson',
             success : function (response) {
                 var feature = L.geoJSON(response).addTo(aquiferGroup);
                 map.fitBounds(feature.getBounds());
