@@ -1300,7 +1300,7 @@ def process_nc_files(region: int, aquifer: str, variable: str, file: Any,
             new_path = os.path.join(aquifer_dir, new_f_name)
             ds = xr.open_dataset(f_path)
             ds = ds.rename(rename_dict)
-            ds = ds["tsvalue"].to_dataset()
+            # ds = ds["tsvalue"].to_dataset()
             if clip == "True":
                 ds = clip_nc_file(region, aquifer_name, ds)
             ds.to_netcdf(new_path)

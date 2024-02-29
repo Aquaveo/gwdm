@@ -10,18 +10,16 @@ requirements:
   skip: false
   conda:
     channels:
-      - bjrn
       - conda-forge
     packages:
       - geopandas
       - scipy
-      - statsmodels
       - rioxarray
       - geojson
       - simplejson
       - pandarallel
       - gstools
-      - thredds_crawler
+      - siphon
       - matplotlib
       - sphinx_rtd_theme
       - sphinx

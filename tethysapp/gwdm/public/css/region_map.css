@@ -9,11 +9,12 @@
 /*    position: relative;*/
 /*}*/
 #chart-modal .modal-dialog {
-    width: 75%;
+    max-width: 75%;
+    height: 50%;
     position: relative;
 }
 #multi-chart-modal .modal-dialog {
-    width: 75%;
+    max-width: 75%;
     position: relative;
 }
 .min_input{

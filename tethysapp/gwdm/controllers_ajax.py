@@ -822,21 +822,21 @@ def interpolate(request):
     response = {}
     if request.is_ajax() and request.method == "POST":
         # get/check information from AJAX request
-        try:
-            post_info = request.POST
-            info_dict = post_info.dict()
-            result = process_interpolation(info_dict)
-            response["total_time"] = f'{(result["total_time"]/60)} minutes'
-            response["succeeded"] = result["success"]
-            response["failed"] = result["failed"]
-            response["success"] = "success"
-            response["message"] = (
-                f'Total Time: {round(result["total_time"]/60, 2)} minutes,'
-                f' Aquifers Succeeded: {result["success"]},'
-                f' Aquifers Failed: {result["failed"]}'
-            )
-        except Exception as e:
-            response["error"] = str(e)
+        # try:
+        post_info = request.POST
+        info_dict = post_info.dict()
+        result = process_interpolation(info_dict)
+        response["total_time"] = f'{(result["total_time"]/60)} minutes'
+        response["succeeded"] = result["success"]
+        response["failed"] = result["failed"]
+        response["success"] = "success"
+        response["message"] = (
+            f'Total Time: {round(result["total_time"]/60, 2)} minutes,'
+            f' Aquifers Succeeded: {result["success"]},'
+            f' Aquifers Failed: {result["failed"]}'
+        )
+        # except Exception as e:
+        #     response["error"] = str(e)
 
         return JsonResponse(response)
 
