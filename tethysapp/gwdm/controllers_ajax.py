@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import ObjectDeletedError
+
 # from tethys_sdk.workspaces import app_workspace
 # from tethys_sdk.compute import get_scheduler
 from tethys_sdk.routing import controller
@@ -49,7 +50,10 @@ def region_add(request, app_workspace):
     """
     Ajax Controller to process the region shapefile. Submitted through the add_region page.
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         region_name = info.get("region")
@@ -77,8 +81,8 @@ def region_tabulator(request):
     data_dict = []
 
     regions = session.query(Region).order_by(Region.id)[
-              (page * size): ((page + 1) * size)
-              ]
+        (page * size) : ((page + 1) * size)
+    ]
 
     for region in regions:
         json_dict = {"id": region.id, "region_name": region.region_name}
@@ -99,7 +103,10 @@ def region_update(request):
     """
     session = get_session_obj()
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         region_id = info.get("region_id")
@@ -132,7 +139,10 @@ def region_delete(request):
     """
     session = get_session_obj()
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         # get/check information from AJAX request
         post_info = request.POST
 
@@ -162,7 +172,10 @@ def aquifer_add(request, app_workspace):
     """
     Ajax controller to add aquifers to a region
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         region_id = int(info.get("region_id"))
@@ -194,8 +207,8 @@ def aquifer_tabulator(request):
     data_dict = []
 
     aquifers = session.query(Aquifer).order_by(Aquifer.id)[
-               (page * size): ((page + 1) * size)
-               ]
+        (page * size) : ((page + 1) * size)
+    ]
 
     for aquifer in aquifers:
         json_dict = {
@@ -220,7 +233,10 @@ def aquifer_update(request):
     """
     session = get_session_obj()
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         aquifer_id = info.get("aquifer_id")
@@ -255,7 +271,10 @@ def aquifer_delete(request):
     """
     session = get_session_obj()
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         # get/check information from AJAX request
         post_info = request.POST
 
@@ -279,12 +298,19 @@ def aquifer_delete(request):
 
 
 @user_passes_test(user_permission_test)
-@controller(name="get-aquifer-attributes", url="gwdm/add-aquifer/get-attributes", app_workspace=True)
+@controller(
+    name="get-aquifer-attributes",
+    url="gwdm/add-aquifer/get-attributes",
+    app_workspace=True,
+)
 def get_shp_attributes(request, app_workspace):
     """
     Ajax controller to get attributes of uploaded aquifer file. Can be shapefile, csv, or geojson.
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
 
         try:
 
@@ -303,12 +329,17 @@ def get_shp_attributes(request, app_workspace):
 
 
 @user_passes_test(user_permission_test)
-@controller(name="get-wells-attributes", url="gwdm/add-wells/get-attributes", app_workspace=True)
+@controller(
+    name="get-wells-attributes", url="gwdm/add-wells/get-attributes", app_workspace=True
+)
 def get_well_attributes(request, app_workspace):
     """
     Ajax controller to get attributes for add wells page
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
 
         try:
 
@@ -327,12 +358,19 @@ def get_well_attributes(request, app_workspace):
 
 
 @user_passes_test(user_permission_test)
-@controller(name="get-measurements-attributes", url="gwdm/add-measurements/get-attributes", app_workspace=True)
+@controller(
+    name="get-measurements-attributes",
+    url="gwdm/add-measurements/get-attributes",
+    app_workspace=True,
+)
 def get_measurements_attributes(request, app_workspace):
     """
     Ajax controller to get attributes for add measurements page
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
 
         try:
 
@@ -351,12 +389,19 @@ def get_measurements_attributes(request, app_workspace):
 
 
 @user_passes_test(user_permission_test)
-@controller(name="upload-rasters-ajax", url="gwdm/upload-rasters/get-attributes", app_workspace=True)
+@controller(
+    name="upload-rasters-ajax",
+    url="gwdm/upload-rasters/get-attributes",
+    app_workspace=True,
+)
 def get_raster_attributes(request, app_workspace):
     """
     Ajax controller to get attributes for add measurements page
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
 
         try:
 
@@ -364,8 +409,7 @@ def get_raster_attributes(request, app_workspace):
 
             attributes = process_raster_attributes(raster, app_workspace)
 
-            response = {"success": "success",
-                        "attributes": attributes}
+            response = {"success": "success", "attributes": attributes}
 
             return JsonResponse(response)
 
@@ -381,7 +425,10 @@ def get_aquifers(request, method):
     """
     Ajax controller to get list of aquifers in a region
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         region_id = int(info.get("id"))
@@ -403,7 +450,10 @@ def get_wells(request):
     """
     Ajax controller to get wells in a given aquifer
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         aquifer_id = info.get("id")
@@ -423,7 +473,10 @@ def wells_add(request, app_workspace):
     """
     Ajax controller to add wells
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         lat = info.get("lat")
@@ -473,8 +526,9 @@ def wells_tabulator(request):
     data_dict = []
 
     wells = (
-        session.query(Well).filter(Well.aquifer_id == aquifer_id)
-        .order_by(Well.id)[(page * size): ((page + 1) * size)]
+        session.query(Well)
+        .filter(Well.aquifer_id == aquifer_id)
+        .order_by(Well.id)[(page * size) : ((page + 1) * size)]
     )
 
     for well in wells:
@@ -502,7 +556,10 @@ def well_delete(request):
     """
     session = get_session_obj()
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         # get/check information from AJAX request
         post_info = request.POST
 
@@ -529,7 +586,10 @@ def well_delete(request):
 @controller(name="delete-wells-submit", url="gwdm/delete-wells/submit")
 def bulk_delete_wells(request):
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
         region_id = info.get("region")
         aquifer_id = info.get("aquifer")
@@ -538,12 +598,17 @@ def bulk_delete_wells(request):
 
 
 @user_passes_test(user_permission_test)
-@controller(name="add-measurements-ajax", url="gwdm/add-measurements/submit", app_workspace=True)
+@controller(
+    name="add-measurements-ajax", url="gwdm/add-measurements/submit", app_workspace=True
+)
 def measurements_add(request, app_workspace):
     """
     Ajax controller to add measurements to wells
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         file = request.FILES.getlist("shapefile")
@@ -579,7 +644,10 @@ def measurements_add(request, app_workspace):
 @controller(name="update-measurements-submit", url="gwdm/update-measurements/submit")
 def measurements_delete(request):
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
         variable_id = info.get("variable")
         region_id = info.get("region")
@@ -594,7 +662,10 @@ def rasters_upload(request):
     """
     Ajax controller to upload rasters
     """
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         try:
             info = request.POST
             file = request.FILES.getlist("ncfiles")
@@ -607,10 +678,15 @@ def rasters_upload(request):
             clip = info.get("clip")
             time_var = info.get("time_var")
             display_var = info.get("display_var")
-            rename_dict = {lat: "lat", lon: "lon",
-                           time_var: "time", display_var: "tsvalue"}
-            response = process_nc_files(region, aquifer, variable, file,
-                                        file_name, clip, rename_dict)
+            rename_dict = {
+                lat: "lat",
+                lon: "lon",
+                time_var: "time",
+                display_var: "tsvalue",
+            }
+            response = process_nc_files(
+                region, aquifer, variable, file, file_name, clip, rename_dict
+            )
             return JsonResponse(response)
         except Exception as e:
             return JsonResponse({"error": str(e)})
@@ -620,7 +696,10 @@ def rasters_upload(request):
 @controller(name="delete-rasters-submit", url="gwdm/delete-rasters/submit")
 def rasters_delete(request):
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
         variable_id = info.get("variable")
         region_id = info.get("region")
@@ -636,7 +715,10 @@ def region_timeseries(request):
     Ajax controller to get timeseries for a selected region, well, variable
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
         well_id = info.get("well_id")
         variable_id = info.get("variable_id")
@@ -657,7 +739,10 @@ def region_multiple_timeseries(request):
     Ajax controller to get timeseries for a selected region, multiple wells, variable
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
         variable_id = int(info.get("variable_id"))
         wells_features = info.get("wells_dict")
@@ -673,7 +758,10 @@ def region_well_obs(request):
     Ajax controller to get the observation count for wells for a given aquifer and variable
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         try:
             info = request.POST
             aquifer_id = int(info.get("aquifer_id"))
@@ -699,7 +787,10 @@ def set_outlier(request):
     Ajax controller to set outlier
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
         well_id = info.get("well_id")
         outlier = create_outlier(well_id)
@@ -725,8 +816,8 @@ def variable_tabulator(request):
     data_dict = []
 
     vars = session.query(Variable).order_by(Variable.id)[
-           (page * size): ((page + 1) * size)
-           ]
+        (page * size) : ((page + 1) * size)
+    ]
 
     for var in vars:
         json_dict = {
@@ -752,7 +843,10 @@ def variable_update(request):
     """
     session = get_session_obj()
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         info = request.POST
 
         variable_id = info.get("variable_id")
@@ -790,7 +884,10 @@ def variable_delete(request):
     """
     session = get_session_obj()
 
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         # get/check information from AJAX request
         post_info = request.POST
 
@@ -820,7 +917,10 @@ def interpolate(request):
     Ajax controller to generate the interpolation file
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         # get/check information from AJAX request
         # try:
         post_info = request.POST
@@ -847,7 +947,10 @@ def region_wms_datasets(request, method):
     Ajax controller to get wms datasets for given region, aquifer
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         # get/check information from AJAX request
         post_info = request.POST
         aquifer_name = post_info.get("aquifer_name")
@@ -866,7 +969,10 @@ def region_wms_metadata(request):
     Ajax controller to get the min and max for a selected interpolation netcdf file
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         # get/check information from AJAX request
         post_info = request.POST
         aquifer_name = post_info.get("aquifer_name")
@@ -883,13 +989,18 @@ def region_wms_metadata(request):
     return JsonResponse(response)
 
 
-@controller(name="add-measurements-date-format", url="gwdm/add-measurements/check-date-format")
+@controller(
+    name="add-measurements-date-format", url="gwdm/add-measurements/check-date-format"
+)
 def validate_date_format(request):
     """
     Ajax controller to validate python date format while adding measurements
     """
     response = {}
-    if request.is_ajax() and request.method == "POST":
+    if (
+        request.headers.get("x-requested-with") == "XMLHttpRequest"
+        and request.method == "POST"
+    ):
         post_info = request.POST
         time_format = post_info.get("time_format")
         is_valid = date_format_validator(time_format)
